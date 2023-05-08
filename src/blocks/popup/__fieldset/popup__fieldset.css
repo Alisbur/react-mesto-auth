@@ -1,0 +1,11 @@
+.popup__fieldset {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 100%;
+}
+
+.popup__fieldset:first-of-type {
+  margin-top:34px;
+}
