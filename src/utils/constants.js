@@ -17,3 +17,10 @@ export const connectionConfig = {
   group : 'cohort-63'
 };
 
+export const authConfig = {
+  server: 'https://auth.nomoreparties.co',
+  registerPath : 'signup',
+  loginPath : 'signin',
+  authCheckPath : 'users/me',
+};
+

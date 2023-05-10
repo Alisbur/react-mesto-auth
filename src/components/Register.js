@@ -1,6 +1,7 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
-function Login(props) {
+function Register(props) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -16,7 +17,7 @@ function Login(props) {
   function handleSubmit(e) {
     e.preventDefault();
     props.onSubmit({email, password});
-    console.log(`Вход ${email, password} выполнен`);
+    console.log(`Регистрация ${email, password} выполнена`);
   } 
 
   return (
@@ -33,10 +34,11 @@ function Login(props) {
             <span className="popup__input-error prof-error"></span>
           </fieldset>
           <button type="submit" className={`sign__submit-button`} name="submitBtn">{props.submitBtnCap}</button>
+          <span className="sign__span-text">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__link">Войти</NavLink></span>
         </form>
       </div>
     </section>
   );
 }
 
-export default Login;
+export default Register;
