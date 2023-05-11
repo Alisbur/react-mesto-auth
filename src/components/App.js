@@ -231,7 +231,6 @@ function App() {
       auth.authCheck(jwt).then(({data}) => {
         setIsLoggedIn(true);
         setEmail(data.email);
-        console.log(data.email);
         navigate("/cards", {replace:true});
       })
     }
@@ -256,7 +255,7 @@ function App() {
             cards={cards}
           />} />
         </Routes>
-        {isLoggedIn && <Footer />}
+        <Footer />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} submitBtnCap={!isSaving ? 'Сохранить' : 'Сохранение...'} submitBtnDisabled={isSaving} onUpdateUser={handleUpdateUser} onClose={closeAllPopups} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} submitBtnCap={!isSaving ? 'Сохранить' : 'Сохранение...'} submitBtnDisabled={isSaving} onUpdateAvatar={handleUpdateAvatar} onClose={closeAllPopups} />

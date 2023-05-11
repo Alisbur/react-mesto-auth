@@ -17,7 +17,7 @@ function Register(props) {
   function handleSubmit(e) {
     e.preventDefault();
     props.onSubmit({email, password});
-    console.log(`Регистрация ${email, password} выполнена`);
+    console.log(`Регистрация ${{email, password}} выполнена`);
   } 
 
   return (

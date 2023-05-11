@@ -1,9 +1,7 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
 import editButtonPic from '../images/edit-button.svg';
 import addButtonPic from '../images/add-button-cross.svg';
 import Card from './Card.js';
-import api from '../utils/Api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Main(props) {
