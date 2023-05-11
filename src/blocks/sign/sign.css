@@ -5,12 +5,24 @@
   padding-bottom:41px;
 }
 
+@media (max-width:600px) {
+  .sign {
+    padding-top: 14px;
+  }
+}
+
 .sign__form-container {
   margin: 0 auto;
   max-width: 358px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media (max-width:600px) {
+  .sign__form-container {
+    width: 282px;
+  }
 }
 
 .sign__form {
@@ -20,8 +32,14 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-/*  padding: 34px 36px 37px 36px;*/
+  /*padding: 0 11px;*/
   box-sizing: border-box;
+}
+
+@media (max-width:600px) {
+  .sign__form {
+    padding: 25px 11px;
+  }
 }
 
 .sign__submit-button {
@@ -40,6 +58,15 @@
   cursor: pointer;
   border-radius: 2px;
 }  
+
+@media (max-width:600px) {
+  .sign__submit-button {
+    margin-top: 143px;
+    height: 46px;
+    font-size: 16px;
+    line-height: calc(19.36/16);
+  }
+}
 
 .sign__submit-button:hover {
   opacity: 0.85;
@@ -65,11 +92,16 @@
   line-height: calc(17/14);
   font-weight: 400;
   width: 100%;
+  
 }
 
 .sign__input:focus {
   outline: none;
   background-color: transparent;
+}
+
+.sign__input_type_error {
+  border-color: #FF0000;
 }
 
 .sign__title {
@@ -85,9 +117,9 @@
 
 @media (max-width:600px) {
   .sign__title {
-    font-size: 18px;
-    line-height: calc(21.78/18);
-    margin-bottom: 74px;
+    font-size: 20px;
+    line-height: calc(24.2/20);
+    margin-bottom: 4px;
   }
 }
 
@@ -113,7 +145,32 @@
   text-align: center;
 }
 
+@media (max-width:600px) {
+  .sign__span-text {
+    margin: 20px 0 0 0;
+  }
+}
+
 .sign__link {
   color: white;
   text-decoration: none;
+}
+
+.sign__input-error {
+  display:flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color: #FF0000;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: calc(15/12);
+  max-width: 100%;
+  min-height: 32px;
+  word-break: break-word;
+  visibility: hidden;
+}
+
+.sign__input-error_visible {
+  visibility: visible;
 }

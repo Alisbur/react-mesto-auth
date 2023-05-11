@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate, Routes, Route } from "react-router-dom";
+import { Navigate, useNavigate, useLocation, Routes, Route } from "react-router-dom";
 import '../pages/index.css';
 import Header from './Header.js';
 import Main from './Main.js';
@@ -23,6 +23,7 @@ import InfoTooltip from './InfoTooltip.js';
 function App() {
 
   const navigate = useNavigate();
+  const location = useLocation();
     
   //Переменные состояний 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -36,6 +37,9 @@ function App() {
   const [cardToDelete, setCardToDelete] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedUp, setIsLoggedUp] = useState(false);
+  const [page, setPage] = useState('');
+  const [email, setEmail] = useState('');
 
   //Получаем с сервера данные пользователя
   React.useEffect(function () {
@@ -68,6 +72,11 @@ function App() {
   React.useEffect(() => {
     handleAuthCheck();
   }, [])
+
+  //Определяем текущую страницу
+  React.useEffect(() => {
+    setPage(location.pathname);
+  }, [location]);
 
   //Обработчик нажатия на кнопку Esc
   function handleEscPress(e) {
@@ -185,12 +194,14 @@ function App() {
   function handleRegisterSubmit( newUserData ) {
     auth.register(newUserData)
       .then((data) => {
-        setInfoTooltipOpen(true);
+        setIsLoggedUp(true);
         navigate("/sign-in", {replace:true});
       })
       .catch((err) => {
+        setIsLoggedUp(false);
         alert(`Не удалось зарегистрировать пользователя! Ошибка: ${err}`);
       })
+      .finally(()=>setInfoTooltipOpen(true))
   }  
 
   //Обработчик авторизации пользователя на сервере
@@ -198,8 +209,7 @@ function App() {
     auth.login(userData)
       .then((data) => {
         localStorage.setItem('token', data.token);
-        setIsLoggedIn(true);
-        navigate("/cards", {replace:true});
+        handleAuthCheck();
       })
       .catch((err) => {
         alert(`Не удалось войти в систему! Ошибка: ${err}`);
@@ -210,6 +220,7 @@ function App() {
   function handleLogout() {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+    setEmail('');
     navigate("/sign-in", {replace:true});
   }    
 
@@ -217,23 +228,22 @@ function App() {
   function handleAuthCheck() {
     const jwt = localStorage.getItem('token');
     if (jwt) {
-      auth.authCheck(jwt).then((data) => {
+      auth.authCheck(jwt).then(({data}) => {
         setIsLoggedIn(true);
-        console.log(data);
+        setEmail(data.email);
+        console.log(data.email);
         navigate("/cards", {replace:true});
       })
     }
   }   
   
-
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header loggedIn={isLoggedIn} onBtnClick={handleLogout} />
+        <Header loggedIn={isLoggedIn} email={email} onBtnClick={handleLogout} page={page}/>
         <Routes>
           <Route path="/sign-up" element={<Register submitBtnCap='Зарегистрироваться' title="Регистрация" onSubmit={handleRegisterSubmit} />} />
           <Route path="/sign-in" element={<Login submitBtnCap='Войти' title="Вход" onSubmit={handleLoginSubmit} />} />
-
           <Route path="/" element={isLoggedIn ? <Navigate to="/cards" replace /> : <Navigate to="/sign-in" replace />}/>
           <Route path="*" element={<Page404 />} />
           <Route path="/cards" element={<ProtectedRouteElement element={Main} loggedIn={isLoggedIn} 
@@ -246,14 +256,14 @@ function App() {
             cards={cards}
           />} />
         </Routes>
+        {isLoggedIn && <Footer />}
 
-        <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} submitBtnCap={!isSaving ? 'Сохранить' : 'Сохранение...'} submitBtnDisabled={isSaving} onUpdateUser={handleUpdateUser} onClose={closeAllPopups} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} submitBtnCap={!isSaving ? 'Сохранить' : 'Сохранение...'} submitBtnDisabled={isSaving} onUpdateAvatar={handleUpdateAvatar} onClose={closeAllPopups} />
         <ConfirmPopup isOpen={isConfirmPopupOpen} submitBtnCap={!isSaving ? 'Да' : 'Удаление...'} submitBtnDisabled={isSaving} onSubmit={handleConfirmCardDelete} onClose={closeAllPopups} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} submitBtnCap={!isSaving ? 'Создать' : 'Сохранение...'} submitBtnDisabled={isSaving} onAddPlace={handleAddPlaceSubmit} onClose={closeAllPopups} />
         <ImagePopup selectedCard={selectedCard} onClose={closeAllPopups} />
-        <InfoTooltip isOpen={isInfoTooltipOpen} isOk={true} onClose={closeAllPopups}/>
+        <InfoTooltip isOpen={isInfoTooltipOpen} isOk={isLoggedUp} onClose={closeAllPopups}/>
       </CurrentUserContext.Provider>
     </div>
   );

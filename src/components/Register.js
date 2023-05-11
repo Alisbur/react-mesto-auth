@@ -34,7 +34,7 @@ function Register(props) {
             <span className="popup__input-error prof-error"></span>
           </fieldset>
           <button type="submit" className={`sign__submit-button`} name="submitBtn">{props.submitBtnCap}</button>
-          <span className="sign__span-text">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__link">Войти</NavLink></span>
+          <span className="sign__span-text">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__link link-transparency">Войти</NavLink></span>
         </form>
       </div>
     </section>

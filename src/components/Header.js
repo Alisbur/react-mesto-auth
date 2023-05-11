@@ -1,21 +1,22 @@
 import logo from '../images/logo_white.svg';
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
+import React from "react";
 
 function Header(props) {
-
-  const navigate = useNavigate();
-
-  function handleClick() {
-    props.onBtnClick();
-  }
 
   return (
     <header className="header">
       <img src={logo} className="header__logo" alt="Логотип Mesto" />
-      {props.loggedIn
-        ? (<button onClick={handleClick} className="header__btn">Выйти</button>)
-        : (<NavLink to="/sign-in" className="header__link">Войти</NavLink>)
-      }
+      <div className='header__nav'>
+        {props.loggedIn
+          ? ( <>
+                {props.email && <span className="header__email">{props.email}</span>}
+                <button onClick={()=>props.onBtnClick()} className="header__btn">Выйти</button>
+              </>)
+          : (<NavLink to={props.page==="/sign-up" ? "/sign-in" : "/sign-up"} className="header__link link-transparency">{props.page==="/sign-up" ? "Войти" : "Регистрация"}</NavLink>)
+        }
+
+      </div>
     </header>
   );
 }
