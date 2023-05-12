@@ -1,10 +1,17 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
-function Register(props) {
+function AuthForm(props) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  React.useEffect(()=>{
+    if(props.spanText) {
+      setEmail('');
+      setPassword('');
+    }
+  },[,props.title]);
 
   function handleEmailChange(e) {
     setEmail(e.target.value);
@@ -17,7 +24,6 @@ function Register(props) {
   function handleSubmit(e) {
     e.preventDefault();
     props.onSubmit({email, password});
-    console.log(`Регистрация ${{email, password}} выполнена`);
   } 
 
   return (
@@ -34,11 +40,11 @@ function Register(props) {
             <span className="popup__input-error prof-error"></span>
           </fieldset>
           <button type="submit" className={`sign__submit-button`} name="submitBtn">{props.submitBtnCap}</button>
-          <span className="sign__span-text">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__link link-transparency">Войти</NavLink></span>
+          {props.spanText && <span className="sign__span-text">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__link link-transparency">Войти</NavLink></span>}
         </form>
       </div>
     </section>
   );
 }
 
-export default Register;
+export default AuthForm;

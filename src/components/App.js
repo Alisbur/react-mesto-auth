@@ -13,8 +13,7 @@ import ImagePopup from './ImagePopup.js';
 import api from '../utils/Api.js';
 import auth from '../utils/Auth.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import Login from './Login.js';
-import Register from './Register.js';
+import AuthForm from './AuthForm.js';
 import Page404 from './Page404.js';
 import ProtectedRouteElement from './ProtectedRoute.js';
 import InfoTooltip from './InfoTooltip.js';
@@ -228,11 +227,15 @@ function App() {
   function handleAuthCheck() {
     const jwt = localStorage.getItem('token');
     if (jwt) {
-      auth.authCheck(jwt).then(({data}) => {
-        setIsLoggedIn(true);
-        setEmail(data.email);
-        navigate("/cards", {replace:true});
-      })
+      auth.authCheck(jwt)
+        .then(({data}) => {
+          setIsLoggedIn(true);
+          setEmail(data.email);
+          navigate("/cards", {replace:true});
+        })
+        .catch((err) => {
+          alert(`Не удалось войти в систему! Ошибка: ${err}`);
+        });
     }
   }   
   
@@ -241,8 +244,8 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <Header loggedIn={isLoggedIn} email={email} onBtnClick={handleLogout} page={page}/>
         <Routes>
-          <Route path="/sign-up" element={<Register submitBtnCap='Зарегистрироваться' title="Регистрация" onSubmit={handleRegisterSubmit} />} />
-          <Route path="/sign-in" element={<Login submitBtnCap='Войти' title="Вход" onSubmit={handleLoginSubmit} />} />
+          <Route path="/sign-up" element={<AuthForm submitBtnCap='Зарегистрироваться' title="Регистрация" onSubmit={handleRegisterSubmit} spanText={true}/>} />
+          <Route path="/sign-in" element={<AuthForm submitBtnCap='Войти' title="Вход" onSubmit={handleLoginSubmit} spanText={false}/>} />
           <Route path="/" element={isLoggedIn ? <Navigate to="/cards" replace /> : <Navigate to="/sign-in" replace />}/>
           <Route path="*" element={<Page404 />} />
           <Route path="/cards" element={<ProtectedRouteElement element={Main} loggedIn={isLoggedIn} 
