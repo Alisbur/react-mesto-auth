@@ -40,7 +40,10 @@ function AuthForm(props) {
             <span className="popup__input-error prof-error"></span>
           </fieldset>
           <button type="submit" className={`sign__submit-button`} name="submitBtn">{props.submitBtnCap}</button>
-          {props.spanText && <span className="sign__span-text">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__link link-transparency">Войти</NavLink></span>}
+          {props.spanText 
+            ? <span className="sign__span-text">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__link link-transparency">Войти</NavLink></span>
+            : <span className="sign__span-text">Ещё не зарегистрированы? <NavLink to="/sign-up" className="sign__link link-transparency">Регистрация</NavLink></span>
+          }
         </form>
       </div>
     </section>
