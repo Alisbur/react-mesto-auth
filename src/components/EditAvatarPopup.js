@@ -1,30 +1,38 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
+import { useValidation } from "../hooks/useValidation";
 
 function EditAvatarPopup(props) {
-  //Создаём реф
-  const inputRef = React.useRef(null);
 
-  //Обнуляем инпут при закрытии попапа
-  React.useEffect(() => {
+  const {values, setValues, errors, setErrors, isValid, setIsValid, handleChange, resetForm} = useValidation();
+
+  //Обнуляем инпут при открытии и закрытии попапа
+  React.useEffect(()=>{
+    if(props.isOpen) {
+      resetForm({ link: '' }, { link: '' }, false);
+    }
+  },[props.isOpen]);
+
+/*  React.useEffect(() => {
     if (props.isOpen)
       inputRef.current.value = '';
-  }, [props.isOpen]);
+  }, [props.isOpen]);*/
 
   //ОБработчик сабмита с сохранением ссылки на новый аватар с помощью функции, проброшенной через props
   function handleSubmit(e) {
     e.preventDefault();
-    props.onUpdateAvatar({
-      link:inputRef.current.value
-    });
+    props.onUpdateAvatar(values);
   }
 
   return (
-    <PopupWithForm name='avatarPopup' title='Редактировать профиль' submitBtnCaption={props.submitBtnCap} submitBtnDisabled={props.submitBtnDisabled} onSubmit={handleSubmit} isOpen={props.isOpen} onClose={props.onClose} children={
-      <fieldset className="popup__fieldset">
-        <input ref={inputRef} type="url" className="popup__input popup__input_type_link" placeholder="Введите ссылку" name="link" required />
-        <span className="popup__input-error link-error"></span>
-      </fieldset>
+    <PopupWithForm name='avatarPopup' title='Обновить аватар' onSubmit={handleSubmit} isOpen={props.isOpen} onClose={props.onClose} children={
+      <>
+        <fieldset className="popup__fieldset">
+          <input type="url" value={values.link ? values.link : ""} onChange={handleChange} className="popup__input popup__input_type_link" placeholder="Введите ссылку" name="link" required />
+          <span className={`popup__input-error ${!isValid&&props.isOpen ? "popup__input-error_visible" : "" }`}>{ errors.link }</span>
+        </fieldset>
+        <button type="submit" className={`popup__save-button ${props.submitBtnDisabled||!isValid ? "popup__save-button_inactive" : ""}`} name="submitBtn" disabled={props.submitBtnDisabled||!isValid}>{props.submitBtnCap}</button>
+      </>
     } />
   );
 }

@@ -147,9 +147,9 @@ function App() {
   }
 
   //Обработчик сохранения новых данных пользователя на сервере
-  function handleUpdateUser(newProfileData) {
+  function handleUpdateUser(newUserData) {
     setIsSaving(true);
-    api.modifyProfileData(newProfileData)
+    api.modifyProfileData(newUserData)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();

@@ -10,8 +10,9 @@ function ConfirmPopup(props) {
 
   return (
 
-    <PopupWithForm name='confirmPopup' title='Вы уверены?' submitBtnCaption={props.submitBtnCap} submitBtnDisabled = {props.submitBtnDisabled} onSubmit={ handleSubmit } isOpen={ props.isOpen } onClose={ props.onClose } />
-
+    <PopupWithForm name='confirmPopup' title='Вы уверены?' onSubmit={ handleSubmit } isOpen={ props.isOpen } onClose={ props.onClose } children={
+      <button type="submit" className={`popup__save-button ${props.submitBtnDisabled ? "popup__save-button_inactive" : ""}`} name="submitBtn" disabled={props.submitBtnDisabled}>{props.submitBtnCap}</button>    
+    }/>
   );
 }
 

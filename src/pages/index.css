@@ -31,6 +31,7 @@
 @import url(../blocks/sign/__link/sign__link.css);
 @import url(../blocks/sign/__span-text/sign__span-text.css);
 @import url(../blocks/sign/__submit-button/sign__submit-button.css);
+@import url(../blocks/sign/__submit-button/_inactive/sign__submit-button_inactive.css);
 @import url(../blocks/sign/__title/sign__title.css);
 
 /*---PROFILE---*/
