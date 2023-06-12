@@ -29,7 +29,7 @@ function AddPlacePopup(props) {
         </fieldset>
         <fieldset className="popup__fieldset">
           <input type="url" value={ values.link ? values.link : "" } onChange={ handleChange } className="popup__input popup__input_type_link" placeholder="Введите ссылку" name="link" required />
-          <span className="popup__input-error link-error"></span>
+          <span className={`popup__input-error ${!isValid&&props.isOpen ? "popup__input-error_visible" : "" }`}>{ errors.link }</span>
         </fieldset>
         <button type="submit" className={`popup__save-button ${props.submitBtnDisabled||!isValid ? "popup__save-button_inactive" : ""}`} name="submitBtn" disabled={props.submitBtnDisabled||!isValid}>{props.submitBtnCap}</button>        
       </>
